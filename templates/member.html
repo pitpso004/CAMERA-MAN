@@ -1,0 +1,164 @@
+ <html>
+
+ <head>
+   <title>CAMERA MAN</title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+   <script>
+     function addMember_checkEmpty() {
+       var name = document.forms["add_member"]["name"].value
+       var image = document.forms["add_member"]["add_image"].value
+       if (name == '' || name == null) {
+         document.forms["add_member"]["name"].focus();
+         document.getElementById("alert").innerHTML = "โปรดกรอกข้อมูลให้ครบถ้วน";
+         document.getElementById("wait").innerHTML = "";
+         document.getElementById("confirm").innerHTML = "";
+         return false;
+       } else if (image == '' || image == null) {
+         document.forms["add_member"]["add_image"].focus();
+         document.getElementById("alert").innerHTML = "โปรดกรอกข้อมูลให้ครบถ้วน";
+         document.getElementById("wait").innerHTML = "";
+         document.getElementById("confirm").innerHTML = "";
+         return false;
+       } else {
+         waiting_process()
+         return true;
+       }
+     }
+
+     function waiting_process() {
+       document.getElementById("alert").innerHTML = "";
+       document.getElementById("wait").innerHTML = "กำลังประมวลผล";
+       document.getElementById("confirm").innerHTML = "";
+
+     }
+
+     function delete_imagemember() {
+       if (confirm("Are you sure to delete this ?")) {
+         waiting_process()
+         return true;
+       } else {
+         return false;
+       }
+     }
+
+     function add_imagemember() {
+       if (confirm("Are you sure to update this ?")) {
+         waiting_process()
+         return true;
+       } else {
+         return false;
+       }
+     }
+   </script>
+
+   <style>
+     body {
+       background-color: #C0C0C0;
+     }
+
+     .member {
+       float: left;
+       width: auto;
+       height: auto;
+       text-align: center;
+       margin-left: 15;
+       border-style: solid;
+       border-color: black;
+       background-color: #cfcfcf;
+     }
+   </style>
+ </head>
+
+ <body>
+   <nav class="navbar navbar-inverse">
+     <div class="container-fluid">
+       <div class="navbar-header">
+         <a class="navbar-brand" href="">CAMERA MAN</a>
+       </div>
+       <ul class="nav navbar-nav">
+         <li><a href="home">Home</a></li>
+         <li><a href="camera">เปิดกล้อง</a></li>
+         <li><a href="videoGallery">คลังวิดิโอ</a></li>
+         <li><a href="notificationHistory">การแจ้งเตือน</a></li>
+         <li class="active"><a href="member">สมาชิก</a></li>
+       </ul>
+       <ul class="nav navbar-nav navbar-right">
+         <li><a href="">{% if session['name'] %} {{ session['name'] }} {% endif %}</a></li>
+         <li><a href="logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+       </ul>
+     </div>
+   </nav>
+
+   <div class="container">
+     <form action="{{ url_for('addMember') }}" method="POST" enctype="multipart/form-data" name="add_member"
+       id="add_member">
+       <h3>เพิ่มสมาชิก</h3>
+
+       <h4 id="status" style="color: red;">
+         {% if alert %} {{ alert }} {% endif %}
+       </h4>
+
+       <h4 id="alert" style="color: red;">
+         {% if request.args.get('alert') %} {{ request.args.get('alert') }} {% endif %}
+       </h4>
+
+       <h4 id="wait" style="color: blue;"></h4>
+
+       <h4 id="confirm" style="color: green;">
+         {% if request.args.get('confirm') %} {{ request.args.get('confirm') }} {% endif %}
+       </h4>
+
+       <div class="form-group">
+         <label for="name">ชื่อ:</label>
+         <input type="text" id="name" name="name">
+       </div>
+
+       <div class="form-group">
+         <label for="img">เพิ่มรูป:</label>
+         <input type="file" id="add_image" name="add_image" accept="image/png,image/jpeg" multiple>
+       </div>
+
+       <button type="submit" class="pull-left btn btn-primary" onclick="return addMember_checkEmpty()">เพิ่ม</button>
+     </form>
+   </div>
+
+   <br>
+
+   <div class="container">
+     <h3>สมาชิก</h3>
+
+     {% for data in folder %}
+
+     <div class="member">
+       <form action="{{ url_for('editMember') }}" method="POST" id="edit_member" name="edit_member"
+         enctype="multipart/form-data">
+
+         <img src="{{ 'static/'+session['email']+'/Member/'+data[0]+'/'+'/profile/'+data[0]+'.jpg' }}" width="75px"
+           height="100px">
+
+         <h3>{{ data[0] }}</h3>
+         <h4>{{ data[1] }} รูป</h4>
+
+         <input type="hidden" value="{{ data[0] }}" id="name" name="name">
+         <input type="file" id="edit_image" name="edit_image" accept="image/png,image/jpeg" multiple>
+
+         <button type="submit" class="btn btn-danger mb-2" value="delete" id="submit" name="submit"
+           onclick="return delete_imagemember()">ลบ</button>
+         <button type="submit" class="btn btn-primary mb-2" value="edit" id="submit" name="submit"
+           onclick="return add_imagemember()">เพิ่ม</button>
+
+       </form>
+     </div>
+
+     {% endfor %}
+
+   </div>
+
+ </body>
+
+ </html>

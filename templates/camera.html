@@ -1,0 +1,143 @@
+<html>
+
+<head>
+  <title>CAMERA MAN</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <style>
+    .button {
+      background-color: #4CAF50;
+      /* Green */
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    function setting_camera() {
+      if (confirm("Are you sure to update this ?")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #C0C0C0;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="">CAMERA MAN</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a href="home">Home</a></li>
+        <li class="active"><a href="camera">เปิดกล้อง</a></li>
+        <li><a href="videoGallery">คลังวิดิโอ</a></li>
+        <li><a href="notificationHistory">การแจ้งเตือน</a></li>
+        <li><a href="member">สมาชิก</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="">{% if session['name'] %} {{ session['name'] }} {% endif %}</a></li>
+        <li><a href="logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div align="center">
+      <img src="{{ url_for('video_feed') }}"> <br>
+    </div>
+
+    <br>
+    <hr><br>
+
+    <div>
+      <h3>การตั้งค่าวิดิโอ</h3> <br>
+
+      <div>
+
+        <form action="{{ url_for('setting') }}" method="POST" onsubmit="return setting_camera()">
+          <div>
+            <h4>เวลาในการแจ้งเตือน</h4>
+
+            {% if alert == 1 %}
+            <label class="radio-inline"><input type="radio" name="alert_delay" value="1" checked>1 วินาที </label>
+            <label class="radio-inline"><input type="radio" name="alert_delay" value="3">3 วินาที </label>
+            <label class="radio-inline"><input type="radio" name="alert_delay" value="5">5 วินาที </label>
+            {% elif alert == 3 %}
+            <label class="radio-inline"><input type="radio" name="alert_delay" value="1">1 วินาที </label>
+            <label class="radio-inline"><input type="radio" name="alert_delay" value="3" checked>3 วินาที </label>
+            <label class="radio-inline"><input type="radio" name="alert_delay" value="5">5 วินาที </label>
+            {% elif alert == 5 %}
+            <label class="radio-inline"><input type="radio" name="alert_delay" value="1">1 วินาที </label>
+            <label class="radio-inline"><input type="radio" name="alert_delay" value="3">3 วินาที </label>
+            <label class="radio-inline"><input type="radio" name="alert_delay" value="5" checked>5 วินาที </label>
+            {% endif %}
+
+          </div>
+          <br>
+          <div>
+            <h4>เวลาในการบันทึกวิดิโอ</h4>
+
+            {% if record == 30 %}
+            <label class="radio-inline"><input type="radio" name="record_delay" value="30" checked>30 วินาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="60">1 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="300">5 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="1800">30 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="3600">1 ชั่วโมง </label>
+            {% elif  record == 60 %}
+            <label class="radio-inline"><input type="radio" name="record_delay" value="30">30 วินาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="60" checked>1 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="300">5 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="1800">30 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="3600">1 ชั่วโมง </label>
+            {% elif  record == 300 %}
+            <label class="radio-inline"><input type="radio" name="record_delay" value="30">30 วินาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="60">1 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="300" checked>5 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="1800">30 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="3600">1 ชั่วโมง </label>
+            {% elif  record == 1800 %}
+            <label class="radio-inline"><input type="radio" name="record_delay" value="30">30 วินาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="60">1 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="300">5 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="1800" checked>30 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="3600">1 ชั่วโมง </label>
+            {% elif  record == 3600 %}
+            <label class="radio-inline"><input type="radio" name="record_delay" value="30">30 วินาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="60">1 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="300">5 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="1800">30 นาที </label>
+            <label class="radio-inline"><input type="radio" name="record_delay" value="3600" checked>1 ชั่วโมง </label>
+            {% endif %}
+
+          </div>
+          <br>
+          <button type="submit" class="btn btn-primary">ยืนยัน</button>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

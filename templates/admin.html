@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>
+            ADMIIN
+        </title>
+        <script>
+            function delete_member() {
+              if(confirm("Are you sure to delete this ?")) {
+                return true ;
+              }else{return false ;}
+                  }
+        </script>
+    </head>
+    <body>
+        <h3>ระบบจัดการสมาชิก</h3>
+        <table border="1">
+            <tr>
+                <th>เลขประจำตัว</th>
+                <th>ชื่อ</th>
+                <th>อีเมล</th>
+                <th>Line Token</th>
+                <th>สถานะการใช้งาน</th>
+            </tr>
+
+            {% for data in datas %}
+            <form action="{{ url_for('manage') }}" method="POST" onsubmit="return delete_member()">
+                <tr>
+                    <th>{{ data[0] }}</th>
+                    <th>{{ data[1] }}</th>
+                    <th>{{ data[2] }}</th>
+                    <th>{{ data[5] }}</th>
+
+                    {% if data[4] == '0' %}
+                        <th><font color="red">ออฟไลน์</font></th>
+                    {% else %}
+                        <th><font color="green">ออนไลน์</font></th>
+                    {% endif %}
+
+                    <th><input type="submit" value="ลบ"></th>
+                </tr>
+                <input type="hidden" value="{{ data[2] }}" id="member_email" name="member_email">
+            </form>
+            {% endfor %}
+
+        </table>
+    </body>
+</html>

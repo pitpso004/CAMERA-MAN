@@ -1,0 +1,98 @@
+<html>
+
+<head>
+  <title>CAMERA MAN</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <style>
+    .date {
+      float: left;
+      width: 100%;
+      height: auto;
+    }
+
+    .video {
+      float: left;
+      width: auto;
+      height: auto;
+      text-align: center;
+      margin-left: 15;
+    }
+  </style>
+  
+  <script>
+    function delete_video() {
+      if (confirm("Are you sure to delete this ?")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #C0C0C0;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="">CAMERA MAN</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a href="home">Home</a></li>
+        <li><a href="camera">เปิดกล้อง</a></li>
+        <li class="active"><a href="">คลังวิดิโอ</a></li>
+        <li><a href="notificationHistory">การแจ้งเตือน</a></li>
+        <li><a href="member">สมาชิก</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="">{% if session['name'] %} {{ session['name'] }} {% endif %}</a></li>
+        <li><a href="logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <h3>คลังวิดิโอ</h3>
+    {% for date in dates %}
+
+    <div class="date">
+      <h4>วันที่ {{ date }}</h4>
+      {% for video_data in video_datas %}
+
+      {% if video_data[1] == date %}
+
+      <form action="{{ url_for('deleteVideo') }}" method="POST" onsubmit="return delete_video()">
+        <div class="video">
+          <video width="200" height="150" controls>
+            <source src="{{ 'static/'+session['email']+'/Video/'+video_data[0] }}">
+          </video>
+
+          <p>เวลา {{ video_data[2] + ' - ' + video_data[3] }}</p>
+
+          <input type="hidden" value="{{ video_data[0] }}" id="video_name" name="video_name">
+          <input type="submit" value="ลบ" class="btn btn-danger">
+        </div>
+      </form>
+
+      {% endif %}
+
+      {% endfor %}
+    </div>
+    <hr>
+
+    {% endfor %}
+
+  </div>
+</body>
+
+</html>
