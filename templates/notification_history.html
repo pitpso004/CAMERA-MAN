@@ -46,11 +46,11 @@
       var token = document.forms["add_notification"]["notification_linetoken"].value
       if (name == '' || name == null) {
         document.forms["add_notification"]["notification_name"].focus();
-        document.getElementById("alert").innerHTML = "โปรดกรอกข้อมูลให้ครบถ้วน";
+        document.getElementById("alertSelectbox").innerHTML = "โปรดกรอกข้อมูลให้ครบถ้วน";
         return false;
       } else if (token == '' || token == null) {
         document.forms["add_notification"]["notification_linetoken"].focus();
-        document.getElementById("alert").innerHTML = "โปรดกรอกข้อมูลให้ครบถ้วน";
+        document.getElementById("alertSelectbox").innerHTML = "โปรดกรอกข้อมูลให้ครบถ้วน";
         return false;
       } else {
         if (confirm("Are you sure to save this ?")) {
@@ -191,7 +191,7 @@ e
         <form action="{{ url_for('addNotification') }}" method="POST" id="add_notification" name="add_notification">
           <div class="modal-body">
 
-            <h4 id="alert" style="color: red;"></h4>
+            <h4 id="alertSelectbox" style="color: red;"></h4>
 
             <div class="form-group">
               <label>ชื่อกลุ่ม</label>

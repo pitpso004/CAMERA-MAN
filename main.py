@@ -11,7 +11,8 @@ import random
 import time
 import numpy as np
 from sklearn import svm, neighbors
-from joblib import dump, load 
+from joblib import dump, load
+from winreg import *
 
 def create_model(user_email):
     encodings = []
@@ -64,7 +65,6 @@ def get_linetoken(user_email): # ขอ line token ข้อผู้ใช้
         line_token.append(token[1]) # line_token[1] = line_token
 
     return line_token
-
 
 def get_delay(user_email):
     cur = conn.cursor()
@@ -415,6 +415,7 @@ def render_frame(user_email,line_token,alert_delay,record_delay):
                             # เช็คค่าความแม่นยำ ของ การเปรียบเทียวใบหน้า
                             if (np.ndarray.max(confidence)) >= 0.7 :
                                 name = model.predict([face_encoding_unknows])
+
                                 # print('ตรวจพบใบหน้า '+name[0])
 
                             else:
@@ -423,6 +424,7 @@ def render_frame(user_email,line_token,alert_delay,record_delay):
 
                                 faceUnknow_image = time_now() + ".jpg"
                                 cap_frame(frame,faceUnknow_image,user_email,line_token)
+
                                 # print('ตรวจพบใบหน้าที่ไม่รู้จัก')
 
                         else:
@@ -431,6 +433,7 @@ def render_frame(user_email,line_token,alert_delay,record_delay):
 
                             faceUnknow_image = time_now() + ".jpg"
                             cap_frame(frame,faceUnknow_image,user_email,line_token)
+
                             # print('ตรวจพบใบหน้าที่ไม่รู้จัก')
 
                         names.append(name)
@@ -470,6 +473,7 @@ def render_frame(user_email,line_token,alert_delay,record_delay):
                         motion_foune = "yes"
 
                         motionDetect_frame = frame
+
                         # print('ตรวจพบการเคลื่อนไหว')
 
                 elif (motion_foune == 'yes') and ((motionDetect_end - motionDetect_start) > 5):
@@ -487,6 +491,7 @@ def render_frame(user_email,line_token,alert_delay,record_delay):
 
                 elif (motion_foune == 'yes'):
                     motionDetect_end = time.time()
+
                     # print('ดีเลการเตลี่อนไหว')
                     
             elif face_found == 'yes' and ((faceDetect_end - faceDetect_start) > alert_delay) :
@@ -495,6 +500,7 @@ def render_frame(user_email,line_token,alert_delay,record_delay):
 
             elif face_found == 'yes':
                 faceDetect_end = time.time()
+                
                 # print('ดีเลใบหน้า')
 
             # บันทึกวิดิโอ
@@ -889,6 +895,39 @@ def editMember():
             except:
                 alert = "ไม่สามารถอัปเดตข้อมูลสมาชิกนี้ได้"
                 return redirect(url_for('member',alert=alert))
+
+@app.route("/capture") # หน้าฟอร์ม ถ่ายรูป
+def capture():
+    key = OpenKey(HKEY_CURRENT_USER, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders')
+    download_path = QueryValueEx(key, '{374DE290-123F-4565-9164-39C4925E467B}')[0]
+
+    return render('capture.html' ,download_path=download_path)
+
+@app.route("/captureVideo",methods = ['post','get']) # หน้า แสดงภาพ สำหรับ ถ่ายรูป
+def capture_video():
+    return Response(video_frame(),mimetype='multipart/x-mixed-replace; boundary=frame')
+
+def video_frame():
+    while(video_capture.isOpened()):
+        ret, frame = video_capture.read()
+
+        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg',frame)[1].tobytes() + b'\r\n')
+
+@app.route("/captureFrame",methods = ['post','get']) # หน้าฟอร์ม ดาวน์โหลดรูป
+def capture_frame():
+    if request.method == "POST":
+        ret, frame = video_capture.read()
+
+        key = OpenKey(HKEY_CURRENT_USER, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders')
+        download_path = QueryValueEx(key, '{374DE290-123F-4565-9164-39C4925E467B}')[0]
+
+        count = len(glob.glob(os.path.join(download_path,'*jpg')))
+        image_name = os.path.join(download_path,('Downloads_'+str(count+1)+'.jpg'))
+        # print(image_name)
+
+        cv2.imwrite(image_name,frame)
+
+    return redirect(url_for('capture'))
 
 @app.route("/admin") # หน้าฟอร์มสำหรับ จัดการสมาชิก
 def admin():
