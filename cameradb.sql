@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2020 at 05:49 PM
+-- Generation Time: Nov 06, 2020 at 08:13 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -35,15 +35,6 @@ CREATE TABLE `alerts_member` (
   `member_email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `alerts_member`
---
-
-INSERT INTO `alerts_member` (`alert_id`, `alert_name`, `alert_date`, `alert_time`, `member_email`) VALUES
-(983, '03102020 152133.jpg', '03/10/20', '15:21:38', 'pitpso005@gmail.com'),
-(984, '03102020 152312.jpg', '03/10/20', '15:23:17', 'pitpso005@gmail.com'),
-(996, '03102020 211202.jpg', '03/10/20', '21:12:02', 'pitpso005@gmail.com');
-
 -- --------------------------------------------------------
 
 --
@@ -53,17 +44,9 @@ INSERT INTO `alerts_member` (`alert_id`, `alert_name`, `alert_date`, `alert_time
 CREATE TABLE `images_member` (
   `image_id` int(11) NOT NULL,
   `image_folder` varchar(50) NOT NULL,
+  `image_count` int(11) NOT NULL,
   `member_email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `images_member`
---
-
-INSERT INTO `images_member` (`image_id`, `image_folder`, `member_email`) VALUES
-(916, 'non', 'pitpso005@gmail.com'),
-(917, 'aof', 'pitpso005@gmail.com'),
-(918, 'nack', 'pitpso005@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -77,15 +60,6 @@ CREATE TABLE `linetoken_member` (
   `token_line` varchar(43) NOT NULL,
   `member_email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `linetoken_member`
---
-
-INSERT INTO `linetoken_member` (`token_id`, `token_name`, `token_line`, `member_email`) VALUES
-(5, 'Camera Man', 'N6l8F3kOu3PczpQp1rLy3vTF4OL7OYSxfnj1jFLpFQO', 'pitpso005@gmail.com'),
-(6, 'ตัวเอง', '7NuQEfNJ3j74mnUVEBEturX11KZ7xPkrqL7o7iGpEAu', 'pitpso005@gmail.com'),
-(7, 'เจมส์', 'ZOerDErhG8KP4ENzGBUgEtBQML7IdaTSopotvHxgFEv', 'pitpso005@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -104,14 +78,6 @@ CREATE TABLE `register_member` (
   `delay_record` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `register_member`
---
-
-INSERT INTO `register_member` (`member_id`, `member_name`, `member_email`, `member_password`, `member_state`, `token_id`, `delay_alert`, `delay_record`) VALUES
-(1, 'non', 'pitpso005@gmail.com', '1234', '0', 6, 5, 30),
-(4, 'ohm', 'ommi406@outlook.com', '1234', '0', 0, 5, 30);
-
 -- --------------------------------------------------------
 
 --
@@ -126,15 +92,6 @@ CREATE TABLE `videos_member` (
   `videos_timeEnd` varchar(8) NOT NULL,
   `member_email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `videos_member`
---
-
-INSERT INTO `videos_member` (`videos_id`, `videos_name`, `videos_date`, `videos_timeStart`, `videos_timeEnd`, `member_email`) VALUES
-(40, '03102020 152317.mp4', '03/10/20', '15:23:18', '15:23:48', 'pitpso005@gmail.com'),
-(44, '03102020 155943.mp4', '03/10/20', '15:59:43', '16:00:14', 'pitpso005@gmail.com'),
-(45, '03102020 211459.mp4', '03/10/20', '21:14:59', '21:15:30', 'pitpso005@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -179,19 +136,19 @@ ALTER TABLE `videos_member`
 -- AUTO_INCREMENT for table `alerts_member`
 --
 ALTER TABLE `alerts_member`
-  MODIFY `alert_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1025;
+  MODIFY `alert_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1108;
 
 --
 -- AUTO_INCREMENT for table `images_member`
 --
 ALTER TABLE `images_member`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=921;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=984;
 
 --
 -- AUTO_INCREMENT for table `linetoken_member`
 --
 ALTER TABLE `linetoken_member`
-  MODIFY `token_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `token_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `register_member`
@@ -203,7 +160,7 @@ ALTER TABLE `register_member`
 -- AUTO_INCREMENT for table `videos_member`
 --
 ALTER TABLE `videos_member`
-  MODIFY `videos_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `videos_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

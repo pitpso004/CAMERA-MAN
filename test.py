@@ -28,13 +28,20 @@ import dlib
 import pytesseract
 from winreg import *
 
-key = OpenKey(HKEY_CURRENT_USER, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders')
-Downloads = QueryValueEx(key, '{374DE290-123F-4565-9164-39C4925E467B}')[0]
+x = '30/12/2541'
+y = '1/1/2541'
 
-count = len(glob.glob(os.path.join(Downloads,'*jpg')))
+z = x.split("/")
+print(z[1])
 
-print(Downloads,count)
+# key = OpenKey(HKEY_CURRENT_USER, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders')
+# Downloads = QueryValueEx(key, '{374DE290-123F-4565-9164-39C4925E467B}')[0]
 
+# count = len(glob.glob(os.path.join(Downloads,'*jpg')))
+
+# print(Downloads,count)
+
+# ****************************************************************************************************************************
 
 # pytesseract.pytesseract.tesseract_cmd = os.path.join('C:','Program Files','Tesseract-OCR','tesseract.exe')
 
@@ -86,6 +93,8 @@ print(Downloads,count)
 
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
+
+# ****************************************************************************************************************************
 
 # def openCamera():
 #     video_capture = cv2.VideoCapture(0)
@@ -193,6 +202,7 @@ print(Downloads,count)
 # predict()
 # openCamera()
 
+# ****************************************************************************************************************************
 
 # conn = pymysql.connect('localhost','root','','cameraDB')
 # cur = conn.cursor()
@@ -236,6 +246,7 @@ print(Downloads,count)
 
 # cv2.destroyAllWindows()
 
+# ****************************************************************************************************************************
 
 # print(datetime.now().strftime("%d"+"/"+"%m"+"/"+"%Y"),datetime.now().strftime("%X"))
 
